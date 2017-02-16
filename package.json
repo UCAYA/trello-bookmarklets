@@ -1,0 +1,22 @@
+{
+  "name": "trello-bookmarklets",
+  "version": "1.0.0",
+  "description": "Bookmarklets for Trello",
+  "main": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UCAYA/trello-bookmarklets.git"
+  },
+  "keywords": [
+    "trello",
+    "bookmarklets",
+    "international",
+    "collaboration",
+  ],
+  "author": "UCAYA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/UCAYA/trello-bookmarklets/issues"
+  },
+  "homepage": "https://github.com/UCAYA/trello-bookmarklets#readme"
+}
