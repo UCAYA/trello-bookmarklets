@@ -14,6 +14,14 @@ Fill checklist in Card from List
 How to : Open card, name your Checklist "# {idBoard} {listName}"
 ![trello-bookmarklets-checklist-from-list-101.gif](assets/trello-bookmarklets-checklist-from-list-101.gif)
 
+#### checklist-from-list
+
+Toggle checklist on Card
+
+[Trello: Toggle checklist](javascript:!function(){(function(){$.cookie(%22token%22);if(!/\/c\/([^\/]+)/.exec(document.location))return%20alert(%22No%20cards%20are%20open.%22),!1;var%20e=function(){window.toggleChecklistIsCollapse%3F($(%22.checklist%22).removeClass(%22utp-is-collapse%22),window.toggleChecklistIsCollapse=!1):($(%22.checklist%22).addClass(%22utp-is-collapse%22),window.toggleChecklistIsCollapse=!0)},t=function(){$(this).toggleClass(%22utp-is-collapse%22)},l=window.toggleChecklistInit,c=$(%22%23trello-toggle-checklist-button%22);if(!l){var%20o=document.createElement(%22style%22),i=document.createTextNode(%22.checklist.utp-is-collapse%20.checklist-items-list%20{%20display:%20none%20}%22);o.appendChild(i),i=document.createTextNode(%22.checklist.utp-is-collapse%20.window-module-title-icon%20{%20color:%20red%20}%22),o.appendChild(i);document.getElementsByTagName(%22head%22)[0].appendChild(o),$(%22.checklist-list%22).before('%3Ca%20id=%22trello-toggle-checklist-button%22%20class=%22quiet%22%20href=%22%23%22%3EToggle%20checklists%3C/a%3E'),c=$(%22%23trello-toggle-checklist-button%22),c.click(e),$(%22.checklist%22).click(t),window.toggleChecklistInit=!0}e()})()}();)
+
+How to : WIP
+
 ### Thanks
 
 Thanks to [@chriszarate](https://github.com/chriszarate) for [https://github.com/chriszarate/bookmarkleter](https://github.com/chriszarate/bookmarkleter)
