@@ -18,7 +18,7 @@ How to : Open card, name your Checklist "# {idBoard} {listName}"
 
 Toggle checklist on Card
 
-[Trello: Toggle checklist](javascript:void%20function(){var%20e=/\/c\/([^\/]+)/.exec(document.location);if(!e)return%20alert(%22No%20cards%20are%20open.%22),!1;var%20l=function(){window.toggleChecklistIsCollapse%3F($(%22.checklist%22).removeClass(%22utp-is-collapse%22),window.toggleChecklistIsCollapse=!1):($(%22.checklist%22).addClass(%22utp-is-collapse%22),window.toggleChecklistIsCollapse=!0)},t=function(){var%20e=$(this);e.toggleClass(%22utp-is-collapse%22)},c=window.toggleChecklistInit,o=$(%22%23trello-toggle-checklist-button%22);if(!c){var%20i=document.createElement(%22style%22),s=document.createTextNode(%22.checklist.utp-is-collapse%20.checklist-items-list%20{%20display:%20none%20}%22);i.appendChild(s),s=document.createTextNode(%22.checklist.utp-is-collapse%20.window-module-title-icon%20{%20color:%20red%20}%22),i.appendChild(s);var%20a=document.getElementsByTagName(%22head%22);a[0].appendChild(i),$(%22.checklist-list%22).before('%3Ca%20id=%22trello-toggle-checklist-button%22%20class=%22quiet%22%20href=%22%23%22%3EToggle%20checklists%3C/a%3E'),o=$(%22%23trello-toggle-checklist-button%22),o.click(l),$(%22.checklist%22).click(t),window.toggleChecklistInit=!0}l()}();)
+[Trello: Toggle checklist]()
 
 How to : Open card, then you can toggle all checklists or just one when you click on it
 
