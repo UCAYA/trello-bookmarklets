@@ -1,5 +1,5 @@
 javascript:(function(){
-	var token = $.cookie('token');
+	//var token = $.cookie('token');
 
 	var parts = /\/c\/([^/]+)/.exec(document.location);
 
