@@ -22,6 +22,14 @@ Toggle checklist on Card
 
 How to : Open card, then you can toggle all checklists or just one when you click on it
 
+#### releasenotes-to-clipboard
+
+Create Release Notes in markdown from a board
+
+[Trello: Create Release Notes]()
+
+How to : Open board, set "done" list and version name
+
 ### Thanks
 
 Thanks to [@chriszarate](https://github.com/chriszarate) for [https://github.com/chriszarate/bookmarkleter](https://github.com/chriszarate/bookmarkleter)
