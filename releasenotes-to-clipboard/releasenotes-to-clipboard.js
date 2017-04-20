@@ -8,29 +8,44 @@ javascript:(function(){
 		return false;
 	}
 
+	if(!window.releasenotesToClipboardIsInit) {
+    var head  = document.getElementsByTagName('head')[0];
+    var link  = document.createElement('link');
+    link.id   = "sweetalert2-css";
+    link.rel  = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.css';
+    link.media = 'all';
+    head.appendChild(link);
+
+		link = document.createElement('script');
+    link.id = "sweetalert2-js";
+    link.type = 'text/javascript';
+    link.src = 'https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js';
+		head.appendChild(link);
+
+		window.releasenotesToClipboardIsInit = true;
+	}
+
 	var idBoard = parts[1];
 	var sb = [];
 
+	var hasLabelName = function(card, labelName) {
+
+		var hasName = function(label) {
+			return label.name.toLowerCase() === labelName;
+		};
+
+		var index = card.labels && card.labels.length > 0 ? card.labels.findIndex(hasName) : -1;
+		return index > -1;
+	};
+
   var isEnhancement = function(card) {
-
-		var hasEnhancementName = function(label) {
-			return label.name.toLowerCase() === 'enhancement';
-		};
-
-		var index = card.labels && card.labels.length > 0 ? card.labels.findIndex(hasEnhancementName) : -1;
-		return index > -1;
+		return hasLabelName(card, 'enhancement');
 	};
-
 	var isBug = function(card) {
-
-		var hasBugName = function(label) {
-			return label.name.toLowerCase() === 'bug';
-		};
-
-		var index = card.labels && card.labels.length > 0 ? card.labels.findIndex(hasBugName) : -1;
-		return index > -1;
+		return hasLabelName(card, 'bug');
 	};
-
 	var isNew = function(card) {
 
 		return !isBug(card) && !isEnhancement(card);
@@ -114,7 +129,17 @@ javascript:(function(){
 		console.log('STEP END: copy to clipboard');
 		//console.log(sb.join('\n'))
 		//window.copy(sb.join('\n'));
-		window.prompt('Copy your Release Notes', sb.join('\n'));
+		//window.prompt('Copy your Release Notes', sb.join('\n'));
+
+	  swal({
+	    title: 'All done!',
+	    html:
+	      'Your Release Notes:<textarea>' +
+	        sb.join('\n') +
+	      '</textarea>',
+	    confirmButtonText: 'Lovely!',
+	    showCancelButton: false
+	  });
 
 	});
 
