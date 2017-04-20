@@ -17,7 +17,7 @@ javascript:(function(){
 			return label.name.toLowerCase() === 'enhancement';
 		};
 
-		var index = card.labels.findIndex(hasEnhancementName);
+		var index = card.labels && card.labels.length > 0 ? card.labels.findIndex(hasEnhancementName) : -1;
 		return index > -1;
 	};
 
@@ -27,7 +27,7 @@ javascript:(function(){
 			return label.name.toLowerCase() === 'bug';
 		};
 
-		var index = card.labels.findIndex(hasBugName);
+		var index = card.labels && card.labels.length > 0 ? card.labels.findIndex(hasBugName) : -1;
 		return index > -1;
 	};
 
@@ -54,6 +54,7 @@ javascript:(function(){
 		var cards = list.cards.filter(isNew);
 
 		if(cards && cards.length > 0) {
+			console.log('⭐️ New: ' + cards.length);
 
 			sb.push('## ⭐️ New');
 
@@ -71,6 +72,7 @@ javascript:(function(){
 		cards = list.cards.filter(isEnhancement);
 
 		if(cards && cards.length > 0) {
+			console.log('👍 Updated: ' + cards.length);
 
 			sb.push('## 👍 Updated');
 
@@ -89,6 +91,7 @@ javascript:(function(){
 		cards = list.cards.filter(isBug);
 
 		if(cards && cards.length > 0) {
+			console.log('🐛 Fixed: ' + cards.length);
 
 			sb.push('## 🐛 Fixed');
 
@@ -107,6 +110,7 @@ javascript:(function(){
 		sb.push('## ⚠️ Known Issues');
 		sb.push('\n');
 
+		console.log(sb);
 		console.log('STEP END: copy to clipboard');
 		//console.log(sb.join('\n'))
 		//window.copy(sb.join('\n'));
