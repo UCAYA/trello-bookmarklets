@@ -13,8 +13,10 @@ javascript: (function(win, name, desc) {
   script.type = 'text/javascript';
   script.id = ubID;
   script.src = ubUrl;
+  script.onload = script.onreadystatechange = function() {
+                                                  var state = this.readyState;
+                                                  state && "loaded" !== state && "complete" !== state || win.ucayaBookmarklets.releaseNotesInit();
+                                              }
   head.appendChild(script);
-
-  win.ucayaBookmarklets.releaseNotesInit();
 
 })(window, document.title, getSelection ? getSelection().toString() : '')
