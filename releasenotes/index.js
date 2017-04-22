@@ -13,7 +13,7 @@ window.ucayaBookmarklets.releaseNotesInit = function() {
 
   function addRequireScript(url, version) {
     var src = version ? url + '?v=' + version : url;
-    var script = document.querySelectorAll('script').find(function(_){ return _.src === src });
+    var script = Array.apply(null, document.querySelectorAll('script')).find(function(_){ return _.src === src });
     if(!script) {
       //script.parentNode.removeChild(script);
       var head  = document.getElementsByTagName('head')[0];
@@ -26,7 +26,7 @@ window.ucayaBookmarklets.releaseNotesInit = function() {
 
   function addRequireCss(url, version) {
     var href = version ? url + '?v=' + version : url;
-    var link = document.querySelectorAll('link').find(function(_){ return _.href === href });
+    var link = Array.apply(null, document.querySelectorAll('script')).find(function(_){ return _.href === href });
     if(!link) {
       //link.parentNode.removeChild(link);
       var head  = document.getElementsByTagName('head')[0];
