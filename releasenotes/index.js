@@ -20,7 +20,7 @@ window.ucayaBookmarklets.releaseNotesInit = function() {
       script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = src;
-      head.appendChild(src);
+      head.appendChild(script);
     }
   }
 
