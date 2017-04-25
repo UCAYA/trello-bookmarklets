@@ -1,22 +1,12 @@
-javascript: (function(win, name, desc) {
+javascript: (function(U, C, A, Y, A_, __) {
 
-  var ubID = 'ub-releasenotes';
-  var ubUrl = 'https://ucaya.github.io/trello-bookmarklets/releasenotes/index.js';
+  __ = A.getElementById(U);
+  __ && __.parentNode.removeChild(__);
+  __ = A.createElement('script');
+  __.type = 'text/javascript';
+  __.async = 1;
+  __.id = U;
+  __.src = 'https://ucaya.github.io/trello-bookmarklets/' + U + '/index.js';
+  A.getElementsByTagName('head')[0].appendChild(__);
 
-  var script = document.getElementById(ubID);
-  if (script) {
-      script.parentNode.removeChild(script);
-  }
-
-  var head  = document.getElementsByTagName('head')[0];
-  script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.id = ubID;
-  script.src = ubUrl;
-  script.onload = script.onreadystatechange = function() {
-                                                  var state = this.readyState;
-                                                  state && "loaded" !== state && "complete" !== state || win.ucayaBookmarklets.releaseNotesInit();
-                                              }
-  head.appendChild(script);
-
-})(window, document.title, getSelection ? getSelection().toString() : '')
+})('releasenotes', window, document, getSelection ? getSelection().toString() : document.title)
