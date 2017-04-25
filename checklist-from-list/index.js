@@ -12,14 +12,14 @@
 
   var start = function() {
 
-    var token = $.cookie('token');
-
     var parts = /\/c\/([^/]+)/.exec(document.location);
 
     if(!parts) {
       alert('No cards are open.');
       return false;
     }
+
+    var token = $.cookie('token');
 
     var idCard = parts[1];
     var idChecklist = null;
