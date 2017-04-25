@@ -62,6 +62,22 @@
       sb.push(json.desc);
       sb.push('\n');
 
+      for (var i = 0; i < json.checklists.length; i++) {
+        var checklist = json.checklists[i];
+
+        sb.push('## ' + checklist.name);
+        sb.push('\n');
+
+        for (var j = 0; j < checklist.checkItems.length; j++) {
+          var checkItem = checklist.checkItems[j];
+
+          sb.push('- ' + checkItem.name);
+          sb.push('\n');
+
+        }
+
+      }
+
       console.log(sb);
       console.log('STEP END: card-to-markdown');
       //console.log(sb.join('\n'))
