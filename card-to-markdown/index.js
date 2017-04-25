@@ -88,14 +88,22 @@
         type: 'success',
         title: 'Your card in markdown',
         html:
-          '<textarea id="card-to-markdown" rows="10">' +
+          '<textarea class="card-to-markdown" rows="10">' +
             sb.join('\n') +
           '</textarea>',
         confirmButtonText: 'Copy to clipboard and close',
-        showCancelButton: false
+        showCancelButton: false,
+        preConfirm: function () {
+          return new Promise(function (resolve) {
+
+            document.querySelector('textarea.card-to-markdown').select();
+            document.execCommand('copy');
+
+            resolve(document.querySelector('textarea.card-to-markdown').textContent)
+          })
+        },
       }).then(function (result) {
-        document.getElementById('card-to-markdown').select();
-        document.execCommand('copy');
+
       });
 
     });
