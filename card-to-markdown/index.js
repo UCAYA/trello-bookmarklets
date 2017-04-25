@@ -66,15 +66,15 @@
         var checklist = json.checklists[i];
 
         sb.push('## ' + checklist.name);
-        sb.push('\n');
 
         for (var j = 0; j < checklist.checkItems.length; j++) {
           var checkItem = checklist.checkItems[j];
 
           sb.push('- ' + checkItem.name);
-          sb.push('\n');
 
         }
+
+        sb.push('\n');
 
       }
 
@@ -86,13 +86,16 @@
 
       swal({
         type: 'success',
-        title: 'All done!',
+        title: 'Your card in markdown',
         html:
-          'Your Card:<textarea rows="10">' +
+          '<textarea id="card-to-markdown" rows="10">' +
             sb.join('\n') +
           '</textarea>',
-        confirmButtonText: 'Lovely!',
+        confirmButtonText: 'Copy to clipboard and close',
         showCancelButton: false
+      }).then(function (result) {
+        document.getElementById('card-to-markdown').select();
+        document.execCommand('copy');
       });
 
     });
