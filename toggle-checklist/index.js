@@ -10,6 +10,20 @@
  `-'     `-'  `-'     `-'  `-'     `-'  `-'     `-'  `-'     `-' */
 (function () {
 
+  function gaCollect(action, label, value) {
+
+    var img = document.createElement('img');
+    img.height = 1;
+    img.width = 1;
+    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
+              '&ea=' + action + '&el=' + label + '&ev=' + value;
+    img.onload = img.onreadystatechange = function() {
+                                                    var state = this.readyState;
+                                                    state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
+                                                }
+    document.body.appendChild(img);
+  }
+
   var toggleChecklists = function() {
     if(window.toggleChecklistIsCollapse) {
       $('.checklist').removeClass('utp-is-collapse');
@@ -31,10 +45,12 @@
     var parts = /\/c\/([^/]+)/.exec(document.location);
 
     if(!parts) {
+      gaCollect('start', 'toggle-checklist', 'failed');
       alert('No cards are open.');
       return false;
     }
 
+    gaCollect('start', 'toggle-checklist', 'success');
     var toggleButton = $('#trello-toggle-checklist-button');
 
     if(!window.toggleChecklistInit) {

@@ -36,11 +36,26 @@
     }
   }
 
+  function gaCollect(action, label, value) {
+
+    var img = document.createElement('img');
+    img.height = 1;
+    img.width = 1;
+    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
+              '&ea=' + action + '&el=' + label + '&ev=' + value;
+    img.onload = img.onreadystatechange = function() {
+                                                    var state = this.readyState;
+                                                    state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
+                                                }
+    document.body.appendChild(img);
+  }
+
   var start = function() {
 
     var parts = /\/b\/([^/]+)/.exec(document.location);
 
     if(!parts) {
+      gaCollect('start', 'releasenotes', 'failed');
       alert('Your not on Trello board.');
       return false;
     }
@@ -74,6 +89,7 @@
 
     };
 
+    gaCollect('start', 'releasenotes', 'success');
     console.log('STEP 1: idBoard: ' + idBoard);
 
     $.get('/1/boards/' + idBoard + '/lists', { cards: 'open', card_fields: 'url,name,labels' })
