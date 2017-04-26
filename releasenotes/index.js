@@ -150,7 +150,7 @@
         if(list && listMove && list.id !== listMove.id) {
           $.post('/1/lists/' + list.id + '/moveAllCards', {
             token: token,
-            idBoard: idBoard,
+            idBoard: list.idBoard,
             idList: listMove.id
           })
         }
