@@ -147,6 +147,14 @@
         var list = json.find(function(_){ return _.name.toLowerCase() === listName.toLowerCase() });
         var listMove = json.find(function(_){ return _.name.toLowerCase() === listMoveName.toLowerCase() });
 
+        if(list && listMove && list.id !== listMove.id) {
+          $.post('/1/lists/' + list.id + '/moveAllCards', {
+            token: token,
+            idBoard: idBoard,
+            idList: listMove.id
+          })
+        }
+
         sb.push('# 📦 ' + new Date().toLocaleString());
         sb.push('\n');
         sb.push('## ' + versionName);
@@ -238,14 +246,6 @@
             })
           },
         }).then(function (result) {
-
-          if(list && listMove && list.id !== listMove.id) {
-            $.post('/1/lists/[idList]/moveAllCards', {
-      				token: token,
-      				idBoard: idBoard,
-      				idList: listMove.id
-      			})
-          }
 
         });
 
