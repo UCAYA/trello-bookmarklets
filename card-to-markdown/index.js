@@ -43,7 +43,7 @@
     img.width = 1;
     img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
               '&ea=' + action + '&el=' + label + '&ev=' + value;
-    img.onload = script.onreadystatechange = function() {
+    img.onload = img.onreadystatechange = function() {
                                                     var state = this.readyState;
                                                     state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
                                                 }
