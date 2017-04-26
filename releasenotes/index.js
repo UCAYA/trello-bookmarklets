@@ -64,6 +64,8 @@
 
     addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js');
 
+    var token = $.cookie('token');
+
     var idBoard = parts[1];
     var sb = [];
 
@@ -103,6 +105,14 @@
       }
       listsSelector += '</select>';
 
+      var listsMoveSelector = '<select id="swal-list-move" class="swal2-input">';
+      listsMoveSelector += '<option value="none">---</option>';
+      for (var i = 0; i < json.length; i++) {
+        var l = json[i];
+        listsMoveSelector += '<option value="' + l.name + '">' + l.name + '</option>';
+      }
+      listsMoveSelector += '</select>';
+
       swal({
         type: 'question',
         title: 'Release Notes',
@@ -111,12 +121,15 @@
           '🗃 List?' +
           listsSelector +
           '📦 Version?' +
-          '<input id="swal-version" class="swal2-input" placeholder="Build number">',
+          '<input id="swal-version" class="swal2-input" placeholder="Build number">' +
+          '🗃 Move all cards?' +
+          listsMoveSelector,
         preConfirm: function () {
           return new Promise(function (resolve) {
             resolve([
               $('#swal-list').val(),
-              $('#swal-version').val()
+              $('#swal-version').val(),
+              $('#swal-list-move').val()
             ])
           })
         },
@@ -127,10 +140,12 @@
 
         var listName = result[0];
         var versionName = result[1];
+        var listMoveName = result[2];
         console.log(listName);
         console.log(versionName);
 
         var list = json.find(function(_){ return _.name.toLowerCase() === listName.toLowerCase() });
+        var listMove = json.find(function(_){ return _.name.toLowerCase() === listMoveName.toLowerCase() });
 
         sb.push('# 📦 ' + new Date().toLocaleString());
         sb.push('\n');
@@ -211,7 +226,7 @@
             '<textarea class="releasenotes" rows="10">' +
               sb.join('\n') +
             '</textarea>',
-          confirmButtonText: 'Copy to clipboard and close',
+          confirmButtonText: 'Copy to clipboard, (move) and close',
           showCancelButton: false,
           preConfirm: function () {
             return new Promise(function (resolve) {
@@ -223,6 +238,14 @@
             })
           },
         }).then(function (result) {
+
+          if(list && listMove && list.id !== listMove.id) {
+            $.post('/1/lists/[idList]/moveAllCards', {
+      				token: token,
+      				idBoard: idBoard,
+      				idList: listMove.id
+      			})
+          }
 
         });
 
