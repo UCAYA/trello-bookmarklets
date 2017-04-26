@@ -36,11 +36,26 @@
     }
   }
 
+  function gaCollect(action, label, value) {
+
+    var img = document.createElement('img');
+    img.height = 1;
+    img.width = 1;
+    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
+              '&ea=' + action + '&el=' + label + '&ev=' + value;
+    img.onload = script.onreadystatechange = function() {
+                                                    var state = this.readyState;
+                                                    state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
+                                                }
+    document.body.appendChild(img);
+  }
+
   var start = function() {
 
     var parts = /\/c\/([^/]+)/.exec(document.location);
 
     if(!parts) {
+      gaCollect('start', 'card-to-markdown', 'failed');
       alert('No cards are open.');
       return false;
     }
@@ -52,6 +67,7 @@
     var idCard = parts[1];
     var sb = [];
 
+    gaCollect('start', 'card-to-markdown', 'success');
     console.log('STEP 1: idCard: ' + idCard);
 
     $.get('/1/cards/' + idCard, { fields: 'name,desc', checklists: 'all' })

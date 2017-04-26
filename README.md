@@ -39,4 +39,6 @@ How to : Open card, then you can copy the markdown
 
 ### Thanks
 
-Thanks to [@chriszarate](https://github.com/chriszarate) for [https://github.com/chriszarate/bookmarkleter](https://github.com/chriszarate/bookmarkleter)
+To [@limonte](https://github.com/limonte) for [https://github.com/limonte/sweetalert2](https://github.com/limonte/sweetalert2)
+
+To [@chriszarate](https://github.com/chriszarate) for [https://github.com/chriszarate/bookmarkleter](https://github.com/chriszarate/bookmarkleter)
