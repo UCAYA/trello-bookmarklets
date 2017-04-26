@@ -234,7 +234,7 @@
             '<textarea class="releasenotes" rows="10">' +
               sb.join('\n') +
             '</textarea>',
-          confirmButtonText: 'Copy to clipboard, (move) and close',
+          confirmButtonText: 'Copy to clipboard and close',
           showCancelButton: false,
           preConfirm: function () {
             return new Promise(function (resolve) {
