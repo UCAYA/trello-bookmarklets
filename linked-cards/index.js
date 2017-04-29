@@ -92,23 +92,22 @@
               sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
             }
         }
-    });
-
-
+    
       console.log(sb);
       console.log('STEP END: linked-cards');
 
-      swal({
-        type: 'success',
-        title: 'Your card is linked with',
-        html:
-          '<div class="linked-card">' +
-            sb.join('\n') +
-          '</div>',
-        confirmButtonText: 'OK',
-        showCancelButton: false
-      }).then(function (result) {
+        swal({
+          type: 'success',
+          title: 'Your card is linked with',
+          html:
+            '<div class="linked-card">' +
+              sb.join('\n') +
+            '</div>',
+          confirmButtonText: 'OK',
+          showCancelButton: false
+        }).then(function (result) {
 
+          });
       });
 
     });
