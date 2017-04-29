@@ -78,7 +78,7 @@
       var idBoard = jsonCard.idBoard;
 
       console.log('STEP 2: idBoard: ' + idBoard);
-      console.log('JSON : ' + JSON.stringify(jsonCard));
+      //console.log('JSON : ' + JSON.stringify(jsonCard));
 
     $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels' })
       .success(function(jsonList){
