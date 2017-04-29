@@ -60,9 +60,6 @@
       return false;
     }
 
-    var boards = /\/b\/([^/]+)/.exec(document.location);
-     var idBoard = boards[1];
-
     addRequireCss('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.css');
 
     addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js');
@@ -78,6 +75,7 @@
     .success(function(jsonCard){
 
       var urlCard = jsonCard.url;
+      var idBoard = jsonCard.idBoard;
 
     $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels' })
       .success(function(jsonList){
@@ -86,6 +84,7 @@
             var c = jsonList[i];
             
             var desc = c.desc;
+            //Find card url in description
             if( desc.indexOf(urlCard)>-1){
               sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
             }
@@ -95,9 +94,6 @@
 
       console.log(sb);
       console.log('STEP END: linked-cards');
-      //console.log(sb.join('\n'))
-      //window.copy(sb.join('\n'));
-      //window.prompt('Copy: ', sb.join('\n'));
 
       swal({
         type: 'success',
