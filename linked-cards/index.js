@@ -71,7 +71,7 @@
     console.log('STEP 1: idCard: ' + idCard);
 
 
- $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc', checklists: 'all' })
+ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url', checklists: 'all' })
     .success(function(jsonCard){
 
       var urlCard = jsonCard.url;
