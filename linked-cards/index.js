@@ -83,7 +83,7 @@
     $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels' })
       .success(function(jsonList){
 
-        for (var i = 0; i < json.length; i++) {
+        for (var i = 0; i < jsonList.length; i++) {
             var c = jsonList[i];
             
             var desc = c.desc;
