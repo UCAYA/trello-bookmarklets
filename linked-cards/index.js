@@ -80,7 +80,7 @@
       console.log('STEP 2: idBoard: ' + idBoard);
       //console.log('JSON : ' + JSON.stringify(jsonCard));
 
-    $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc' })
+    $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc', list_fields:'name' })
       .success(function(jsonList){
 
         for (var i = 0; i < jsonList.length; i++) {
@@ -89,7 +89,7 @@
             var desc = c.desc;
             //Find card url in description
             if( desc.indexOf(urlCard)>-1){
-              sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
+              sb.push('[$listName$]<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url).replace('$listName$', c.name));
             }
         }
     
@@ -98,7 +98,7 @@
 
         swal({
           type: 'success',
-          title: 'Your card is linked with',
+          title: sb.length >0 ? 'Your card is linked with' : 'Your card is not linked with another card',
           html:
             '<div class="linked-card">' +
               sb.join('\n') +
