@@ -75,7 +75,7 @@
     .success(function(jsonCard){
 
       var urlCard = jsonCard.url;
-      var idBoard = jsonCard.idBoard;
+      var idBoard = jsonCard.boardId;
 
     $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels' })
       .success(function(jsonList){
