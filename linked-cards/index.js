@@ -92,12 +92,12 @@
               sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
             }
 
-            //Fin card url in check listitem
+            //Find card url in checklists items
             for (var j = 0; j < c.checklists.length; j++) {
-              var chekItems = c.checklists[j].checkItems;
-              for (var k = 0; k < chekItems.length ; k++) {
-                var chekItem = chekItems[k];
-                if( chekItem.name.indexOf(urlCard)>-1){
+              var checkItems = c.checklists[j].checkItems;
+              for (var k = 0; k < checkItems.length ; k++) {
+                var checkItem = checkItems[k];
+                if( checkItem.name.indexOf(urlCard)>-1){
                   sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
                 }
               }
@@ -111,7 +111,7 @@
           type: 'success',
           title: sb.length >0 ? 'Your card is linked to' : 'Your card is not linked to any card',
           html:
-            '<div class="linked-card">' +
+            '<div class="linked-card" style="text-align:left">' +
               sb.join('\n') +
             '</div>',
           confirmButtonText: 'OK',
