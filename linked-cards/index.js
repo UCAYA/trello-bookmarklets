@@ -80,16 +80,27 @@
       console.log('STEP 2: idBoard: ' + idBoard);
       //console.log('JSON : ' + JSON.stringify(jsonCard));
 
-    $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc' })
-      .success(function(jsonList){
+    $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc,checklists' })
+      .success(function(jsonBoard){
 
-        for (var i = 0; i < jsonList.length; i++) {
+        for (var i = 0; i < jsonBoard.length; i++) {
             var c = jsonList[i];
             
             var desc = c.desc;
             //Find card url in description
             if( desc.indexOf(urlCard)>-1){
               sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
+            }
+
+            //Fin card url in check listitem
+            for (var j = 0; j < c.checklists.length; j++) {
+              var chekItems = c.checklists[j].checkItems;
+              for (var k = 0; k < chekItems.length ; k++) {
+                var chekItem = chekItems[k];
+                if( chekItem.name.indexOf(urlCard)>-1){
+                  sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
+                }
+              }
             }
         }
     
@@ -98,7 +109,7 @@
 
         swal({
           type: 'success',
-          title: sb.length >0 ? 'Your card is linked with' : 'Your card is not linked with another card',
+          title: sb.length >0 ? 'Your card is linked to' : 'Your card is not linked to any card',
           html:
             '<div class="linked-card">' +
               sb.join('\n') +
