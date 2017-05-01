@@ -80,7 +80,7 @@
       console.log('STEP 2: idBoard: ' + idBoard);
       //console.log('JSON : ' + JSON.stringify(jsonCard));
 
-    $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc,checklists' })
+    $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc,checklists', checklists: 'all' })
       .success(function(jsonBoard){
 
         for (var i = 0; i < jsonBoard.length; i++) {
