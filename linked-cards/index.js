@@ -84,7 +84,7 @@
       .success(function(jsonBoard){
 
         for (var i = 0; i < jsonBoard.length; i++) {
-            var c = jsonList[i];
+            var c = jsonBoard[i];
             
             var desc = c.desc;
             //Find card url in description
