@@ -115,7 +115,7 @@
             }
         }
     
-      console.log(sb);
+      //console.log(sb);
       console.log('STEP END: linked-cards');
 
       var htmlUrlCards = sbUrlCards.length>0 ? '<div style="text-align:left"><p>Referenced cards</p>'+ sbUrlCards.join('\n') +'</div>' : '';
