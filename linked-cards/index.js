@@ -72,21 +72,35 @@
       console.log('STEP 1: idCard: ' + idCard);
 
 
- $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url', checklists: 'all' })
+ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })
     .success(function(jsonCard){
 
       var urlCard = jsonCard.url;
       var idBoard = jsonCard.idBoard;
 
-      //Search cards url in card description
+      //Find cards url in current  card description
       var descCard = jsonCard.desc;
-      var urlMatches = /(https):\/\/trello.com\/c\/([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/.exec(descCard);
+      var urlMatches = /https:\/\/trello.com\/c\/[\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-]/im.exec(descCard);
+
       for (var i = 0; i < urlMatches.length; i++) {
         var infos = urlMatches[i].split('/');
         var name = infos[infos.length-1];
-        sbUrlCards.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+        sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
       }
 
+      //Find cards url in current card checklists items
+      for (var j = 0; j < jsonCard.checklists.length; j++) {
+        var checkItems = jsonCard.checklists[j].checkItems;
+        for (var k = 0; k < checkItems.length ; k++) {
+          var checkItem = checkItems[k];
+          urlMatches = /https:\/\/trello.com\/c\/[\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-]/im.exec(checkItem.name);
+          for (var i = 0; i < urlMatches.length; i++) {
+            var infos = urlMatches[i].split('/');
+            var name = infos[infos.length-1];
+            sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+          }
+        }
+      }
 
       console.log('STEP 2: idBoard: ' + idBoard);
       //console.log('JSON : ' + JSON.stringify(jsonCard));
@@ -100,7 +114,7 @@
             var desc = c.desc;
             //Find card url in description
             if( desc.indexOf(urlCard)>-1){
-              sbLinkedCards.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
+              sbLinkedCards.push('<a href="$url$">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
             }
 
             //Find card url in checklists items
