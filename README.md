@@ -37,6 +37,13 @@ How to : Open card, then you can copy the markdown
 [Trello: Card to markdown](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("card-to-markdown",window,document,getSelection?getSelection().toString():document.title);)
 
 
+#### linked-cards
+Display linked cards
+
+How to : Open card, then you see linked cards
+javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("linked-cards",window,document,getSelection?getSelection().toString():document.title);
+
+
 ### Thanks
 
 To [@limonte](https://github.com/limonte) for [https://github.com/limonte/sweetalert2](https://github.com/limonte/sweetalert2)
