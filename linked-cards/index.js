@@ -67,6 +67,7 @@
     var idCard = parts[1];
     var sbLinkedCards = [];
     var sbUrlCards = [];
+    var allUrls = {};
 
     gaCollect('start', 'linked-cards', 'success');
       console.log('STEP 1: idCard: ' + idCard);
@@ -85,7 +86,10 @@
       for (var i = 0; i < urlMatches.length; i++) {
         var infos = urlMatches[i].split('/');
         var name = infos[infos.length-1];
-        sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+        if( !allUrls[urlMatches[i]]){
+          allUrls[urlMatches[i]] = 1;
+          sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+        }
       }
 
       //Find cards url in current card checklists items
@@ -94,10 +98,15 @@
         for (var k = 0; k < checkItems.length ; k++) {
           var checkItem = checkItems[k];
           urlMatches = /https:\/\/trello.com\/c\/[\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-]/im.exec(checkItem.name);
-          for (var i = 0; i < urlMatches.length; i++) {
-            var infos = urlMatches[i].split('/');
-            var name = infos[infos.length-1];
-            sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+          if(urlMatches){
+            for (var i = 0; i < urlMatches.length; i++) {
+              var infos = urlMatches[i].split('/');
+              var name = infos[infos.length-1];
+              if( !allUrls[urlMatches[i]]){
+                allUrls[urlMatches[i]] = 1;
+                sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+              }
+            }
           }
         }
       }
