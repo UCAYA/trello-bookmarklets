@@ -65,10 +65,11 @@
     addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js');
 
     var idCard = parts[1];
-    var sb = [];
+    var sbLinkedCards = [];
+    var sbUrlCards = [];
 
     gaCollect('start', 'linked-cards', 'success');
-    console.log('STEP 1: idCard: ' + idCard);
+      console.log('STEP 1: idCard: ' + idCard);
 
 
  $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url', checklists: 'all' })
@@ -76,6 +77,16 @@
 
       var urlCard = jsonCard.url;
       var idBoard = jsonCard.idBoard;
+
+      //Search cards url in card description
+      var descCard = jsonCard.desc;
+      var urlMatches = /(https):\/\/trello.com\/c\/([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?/.exec(descCard);
+      for (var i = 0; i < urlMatches.length; i++) {
+        var infos = urlMatches[i].split('/');
+        var name = infos[infos.length-1];
+        sbUrlCards.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
+      }
+
 
       console.log('STEP 2: idBoard: ' + idBoard);
       //console.log('JSON : ' + JSON.stringify(jsonCard));
@@ -89,7 +100,7 @@
             var desc = c.desc;
             //Find card url in description
             if( desc.indexOf(urlCard)>-1){
-              sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
+              sbLinkedCards.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
             }
 
             //Find card url in checklists items
@@ -98,7 +109,7 @@
               for (var k = 0; k < checkItems.length ; k++) {
                 var checkItem = checkItems[k];
                 if( checkItem.name.indexOf(urlCard)>-1){
-                  sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
+                  sbLinkedCards.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
                 }
               }
             }
@@ -107,13 +118,21 @@
       console.log(sb);
       console.log('STEP END: linked-cards');
 
+      var htmlUrlCards = sbUrlCards.length>0 ? '<div style="text-align:left"><p>Referenced cards</p>'+ sbUrlCards.join('\n') +'</div>' : '';
+
+      var htmlLinkedCards = sbLinkedCards.length>0 ? '<div style="text-align:left"><p>Your card is linked to</p>'+ sbLinkedCards.join('\n') +'</div>' : '';
+      
+      var htmlContent = htmlUrlCards;
+      if( htmlContent && htmlLinkedCards )
+        htmlContent += "<br/>" + htmlLinkedCards;
+      else if( htmlLinkedCards )
+        htmlContent = htmlLinkedCards;
+
         swal({
           type: 'success',
-          title: sb.length >0 ? 'Your card is linked to' : 'Your card is not linked to any card',
+          title: htmlContent ? 'Your card links' : 'Your card is not linked to any card',
           html:
-            '<div class="linked-card" style="text-align:left">' +
-              sb.join('\n') +
-            '</div>',
+            htmlContent,
           confirmButtonText: 'OK',
           showCancelButton: false
         }).then(function (result) {
