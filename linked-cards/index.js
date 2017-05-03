@@ -106,7 +106,7 @@
     .success(function(jsonAll){
     
     var jsonAllBoards = jsonAll[0]["200"];
-    var jsonCard = jsonAll[0]["200"];
+    var jsonCard = jsonAll[1]["200"];
 
     var boardsSelector = '<select id="swal-board" class="swal2-input">';
       for (var i = 0; i < jsonAllBoards.length; i++) {
