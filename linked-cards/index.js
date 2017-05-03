@@ -103,7 +103,7 @@
 
     $.get('/1/batch?urls=/organizations/56d59f14e50d6ef4dcfb8dbd/boards,/cards/' + idCard, 
     { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })
-    .sucess(function(jsonAll){
+    .success(function(jsonAll){
     
     var jsonAllBoards = jsonAll[0]["200"];
     var jsonCard = jsonAll[0]["200"];
@@ -113,7 +113,7 @@
         var b = jsonAllBoards[i];
         if( !b.closed){
         //var selectedAttr = l.name.toLowerCase() === 'done' ? 'selected="selected"' : '';
-          boardsSelector += '<option value="' + b.id + '" ' + selectedAttr + '>' + b.name + '</option>';
+          boardsSelector += '<option value="' + b.id + '" >' + b.name + '</option>';
         }
       }
       boardsSelector += '</select>';
