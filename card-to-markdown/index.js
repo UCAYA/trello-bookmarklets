@@ -83,8 +83,13 @@
 
         sb.push('## ' + checklist.name);
 
-        for (var j = 0; j < checklist.checkItems.length; j++) {
-          var checkItem = checklist.checkItems[j];
+        var checkItems = checklist.checkItems;
+        checkItems.sort(function(a, b) {
+                            return a.pos - b.pos;
+                          });
+
+        for (var j = 0; j < checkItems.length; j++) {
+          var checkItem = checkItems[j];
 
           sb.push('- ' + checkItem.name);
 
