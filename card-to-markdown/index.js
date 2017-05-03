@@ -78,8 +78,13 @@
       sb.push(json.desc);
       sb.push('\n');
 
-      for (var i = 0; i < json.checklists.length; i++) {
-        var checklist = json.checklists[i];
+      var checklists = json.checklists;
+      checklists.sort(function(a, b) {
+                          return a.pos - b.pos;
+                        });
+
+      for (var i = 0; i < checklists.length; i++) {
+        var checklist = checklists[i];
 
         sb.push('## ' + checklist.name);
 
