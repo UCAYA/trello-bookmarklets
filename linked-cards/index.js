@@ -77,6 +77,20 @@
         }
   } 
 
+  function searchUrlFromString(data, regExp, allUrls, listIdCards ){
+      var urlMatches = data.match(regExp);
+      if(urlMatches){
+        for (var i = 0; i < urlMatches.length; i++) {
+          var infos = urlMatches[i].split('/');
+          //var name = infos[infos.length-1];
+          if( !allUrls[urlMatches[i]]){
+            allUrls[urlMatches[i]] = 1;
+            listIdCards.push(infos[infos.length-2]);
+          }
+        }
+      }
+  }
+
   var start = function() {
 
     var parts = /\/c\/([^/]+)/.exec(document.location);
@@ -94,6 +108,7 @@
     var idCard = parts[1];
     var sbLinkedCards = [];
     var sbUrlCards = [];
+    var sbIdCards = [];
     var sbLinkedQACards = [];
     var allUrls = {};
     var urlRegExp = /https:\/\/trello.com\/c\/[\w.,@?^=%&:\/~+#-]*[\w.,@?^=%&\/~+#-]/g;
@@ -137,7 +152,6 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
         var idBoardQA = result[0];
         
       $.get('/1/boards/' + idBoardQA + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc,checklists', checklists: 'all' })
-  //  $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })
       .success(function(jsonBoardQA){
 
       var urlCard = jsonCard.url;
@@ -145,40 +159,37 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
 
       //Find cards url in current  card description
       var descCard = jsonCard.desc;
-      var urlMatches = descCard.match(urlRegExp);
-      if(urlMatches){
-            for (var i = 0; i < urlMatches.length; i++) {
-              var infos = urlMatches[i].split('/');
-              var name = infos[infos.length-1];
-              if( !allUrls[urlMatches[i]]){
-                allUrls[urlMatches[i]] = 1;
-                sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
-              }
-            }
-      }
+      searchUrlFromString(descCard, urlRegExp, allUrls, sbIdCards );
 
       //Find cards url in current card checklists items
       for (var j = 0; j < jsonCard.checklists.length; j++) {
         var checkItems = jsonCard.checklists[j].checkItems;
         for (var k = 0; k < checkItems.length ; k++) {
-          var checkItem = checkItems[k];
-          var name = checkItem.name;
-          urlMatches = name.match(urlRegExp);
-          if(urlMatches){
-            for (var i = 0; i < urlMatches.length; i++) {
-              var infos = urlMatches[i].split('/');
-              var name = infos[infos.length-1];
-              if( !allUrls[urlMatches[i]]){
-                allUrls[urlMatches[i]] = 1;
-                sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', name).replace('$url$', urlMatches[i]));
-              }
-            }
-          }
+          searchUrlFromString(checkItems[k].name, urlRegExp, allUrls, sbIdCards );
         }
       }
 
       console.log('STEP 2: idBoard: ' + idBoard);
-      //console.log('JSON : ' + JSON.stringify(jsonCard));
+      
+      
+      //Create batch url to get cards name
+      var batchCardsUrl = '';
+      for (var i = 0; i < sbIdCards.length; i++) {
+          if(batchCardsUrl)
+            batchCardsUrl=",";
+          batchCardsUrl+= "/cards/"+sbIdCards[i];
+      }
+
+
+    $.get('/1/batch?urls=' + batchCardsUrl)
+      .success(function(jsonCards){
+
+        for (var i = 0; i < sbIdCards.length; i++) {
+          var card = jsonCards[i]["200"];
+          sbUrlCards.push('<a href="$url$" >$name$</a><br/>'.replace('$name$', card.name).replace('$url$', card.url));
+        }
+     
+      
     
     $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc,checklists', checklists: 'all' })
       .success(function(jsonBoard){
@@ -186,7 +197,7 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
         searchCardFromBoard (jsonBoard, urlCard, sbLinkedCards);
         searchCardFromBoard (jsonBoardQA, urlCard, sbLinkedQACards);
     
-      //console.log(sb);
+      
       console.log('STEP END: linked-cards');
 
       var htmlUrlCards = sbUrlCards.length>0 ? '<div style="text-align:left"><p>Referenced cards</p>'+ sbUrlCards.join('\n') +'</div>' : '';
@@ -220,11 +231,11 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
 
       });
 
-      }).catch(swal.noop)
+        }).catch(swal.noop)
 
-    });     
+      });     
+    });
   });
-
   };
   
   start();
