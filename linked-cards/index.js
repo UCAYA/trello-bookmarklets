@@ -101,17 +101,16 @@
     gaCollect('start', 'linked-cards', 'success');
       console.log('STEP 1: idCard: ' + idCard);
 
-    $.get('/1/batch?urls=/organizations/56d59f14e50d6ef4dcfb8dbd/boards,/cards/' + idCard, 
-    { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })
-    .success(function(jsonAll){
-    
-    var jsonAllBoards = jsonAll[0]["200"];
-    var jsonCard = jsonAll[1]["200"];
+$.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })
+.success(function(jsonCard){
 
+    $.get('/1/organizations/56d59f14e50d6ef4dcfb8dbd/boards')
+    .success(function(jsonAllBoards){
+    
     var boardsSelector = '<select id="swal-board" class="swal2-input">';
       for (var i = 0; i < jsonAllBoards.length; i++) {
         var b = jsonAllBoards[i];
-        if( !b.closed){
+        if( !b.closed && b.name.indexOf("QA")>-1){
         //var selectedAttr = l.name.toLowerCase() === 'done' ? 'selected="selected"' : '';
           boardsSelector += '<option value="' + b.id + '" >' + b.name + '</option>';
         }
@@ -120,9 +119,9 @@
       swal({
         type: 'question',
         title: 'Linked cards',
-        confirmButtonText: 'ðŸ–¨ Go!',
+        confirmButtonText: 'Go!',
         html:
-          'ðŸ—ƒ QA Board?' + boardsSelector ,
+          'QA Board?' + boardsSelector ,
         preConfirm: function () {
           return new Promise(function (resolve) {
             resolve([
@@ -224,7 +223,7 @@
       }).catch(swal.noop)
 
     });     
-
+  });
 
   };
   
