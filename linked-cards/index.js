@@ -175,7 +175,7 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
       //Create batch url to get cards name
       var batchCardsUrl = '';
       for (var i = 0; i < sbIdCards.length; i++) {
-          if(batchCardsUrl)
+          if(batchCardsUrl != '')
             batchCardsUrl=",";
           batchCardsUrl+= "/cards/"+sbIdCards[i];
       }
