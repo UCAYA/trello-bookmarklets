@@ -6,11 +6,11 @@
 #### checklist-from-list
 Fill checklist in Card from List
 
-How to : Open card, name your Checklist "# {idBoard} {listName}"
+How to : Open card, choose Board, List and checklist
 
 [Trello: Fill checklist](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("checklist-from-list",window,document,getSelection?getSelection().toString():document.title);)
 
-![trello-bookmarklets-checklist-from-list-101.gif](assets/trello-bookmarklets-checklist-from-list-101.gif)
+![trello-bookmarklet-checklistfromlist-101.gif](assets/trello-bookmarklet-checklistfromlist-101.gif)
 
 
 #### toggle-checklist
@@ -20,13 +20,7 @@ How to : Open card, then you can toggle all checklists or just one when you clic
 
 [Trello: Toggle checklist](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("toggle-checklist",window,document,getSelection?getSelection().toString():document.title);)
 
-
-#### releasenotes
-Export Release Notes in markdown from a board
-
-How to : Open board, set "done" list and version name
-
-[Trello: Release Notes](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("releasenotes",window,document,getSelection?getSelection().toString():document.title);)
+![trello-bookmarklet-togglechecklists-101.gif](assets/trello-bookmarklet-togglechecklists-101.gif)
 
 
 #### card-to-markdown
@@ -35,6 +29,18 @@ Export card in markdown
 How to : Open card, then you can copy the markdown
 
 [Trello: Card to markdown](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("card-to-markdown",window,document,getSelection?getSelection().toString():document.title);)
+
+![trello-bookmarklet-cardtomarkdown-101.gif](assets/trello-bookmarklet-cardtomarkdown-101.gif)
+
+
+#### releasenotes
+Export Release Notes in markdown from a board
+
+How to : Open board, set "done" list and version name
+
+[Trello: Release Notes](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("releasenotes",window,document,getSelection?getSelection().toString():document.title);)
+
+![trello-bookmarklet-releasenotes-101.gif](assets/trello-bookmarklet-releasenotes-101.gif)
 
 
 #### linked-cards
