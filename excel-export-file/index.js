@@ -51,46 +51,7 @@
   }
 
 
-  function searchCardFromBoard (jsonBoard, urlCard, sb){
-    for (var i = 0; i < jsonBoard.length; i++) {
-            var c = jsonBoard[i];
-            
-            var desc = c.desc;
-            //Find card url in description
-            if( desc.indexOf(urlCard)>-1){
-              sb.push('<a href="$url$">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
-            }
-
-            //Find card url in checklists items
-            for (var j = 0; j < c.checklists.length; j++) {
-              var checkItems = c.checklists[j].checkItems;
-              for (var k = 0; k < checkItems.length ; k++) {
-                var checkItem = checkItems[k];
-                if( checkItem.name.indexOf(urlCard)>-1){
-                  sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
-                }
-              }
-            }
-
-            //Find card url in attachments 
-            //TO DO
-        }
-  } 
-
-  function searchUrlFromString(data, regExp, allUrls, listIdCards ){
-      var urlMatches = data.match(regExp);
-      if(urlMatches){
-        for (var i = 0; i < urlMatches.length; i++) {
-          var infos = urlMatches[i].split('/');
-          //var name = infos[infos.length-1];
-          if( !allUrls[urlMatches[i]]){
-            allUrls[urlMatches[i]] = 1;
-            listIdCards.push(infos[infos.length-2]);
-          }
-        }
-      }
-  }
-
+ 
   var start = function() {
 
     var parts = /\/b\/([^/]+)/.exec(document.location);
@@ -106,31 +67,32 @@
     addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js');
 
     addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/jszip.js');
-    addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/xlsx.js');
+          addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/xlsx.js');
+          
+          addRequireScript('https://lyrical-thing.glitch.me/excelplus-2.5.js');
 
-    addRequireScript('https://ucaya.github.io/trello-bookmarklets/excel-export-file/excelplus-2.5.js');
-
+    //addRequireScript('https://ucaya.github.io/trello-bookmarklets/excel-export-file/excelplus-2.5.js');
+    
 
     var idBoard = parts[1];
-    var nameBoard = parts[2];
     var sb = [];
 
     gaCollect('start', 'excel-export-file', 'success');
     console.log('STEP 1: idBoard: ' + idBoard);
 
-$.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,list' })
-    .success(function(jsonBoard){
 
-      
-      
-      var fileSelector = '<input type="button" id="file-object">';
-      
+    $.get('/1/boards/' + idBoard + '/lists', { cards: 'open', card_fields: 'url,name,labels,list,members,desc', fields: 'name' })
+    .success(function(jsonLists){
+
+  
+      var fileButton = '<input type="button" id="file-object" >';
+  
       swal({
         type: 'question',
         title: 'Export excel to file',
-        confirmButtonText: 'Go!',
+        confirmButtonText: 'Close',
         html:
-          'Excel file?' + fileSelector ,
+          "<br/>" + 'Excel file : ' + fileButton ,
         preConfirm: function () {
           return new Promise(function (resolve) {
             resolve([
@@ -139,73 +101,105 @@ $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name
           })
         },
         onOpen: function () {
-          $('#file-object').focus()
-        }
-      }).then(function (result){
-        
-        var idBoardQA = result[0];
-        
-       var ep=new ExcelPlus();
-	
-      ep.openLocal({
-      "flashPath":"/js/excelplus/2.4/swfobject/",
-      "labelButton":"Open an Excel file"
-    },function() {
+          
+          
+          //addRequireScript('https://lyrical-thing.glitch.me/excelplus-2.5.js');
+          //addRequireScript('https://lyrical-thing.glitch.me/xlsx.js');
+          
+          
+          
+          $('#file-object').focus();
+            
+           var ep=new ExcelPlus();
+          /*
+          var excelUrl = "https://trello-attachments.s3.amazonaws.com/58de15576bc9da2929b688d6/58de1d3ebb6de971c5ce4e94/b9a9ef4618b00dd5286fc59bc860d583/TEST.xlsx";
+          var content = excelUrl;
+          var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+          if(!contentType) contentType = 'application/octet-stream';
+          var a = document.createElement('a');
+          var blob = new Blob([content], {'type':contentType});
+          a.href = window.URL.createObjectURL(blob);
+          a.download = "devis.xlsx";
+          a.click();
+          
+          ep.openRemote(excelUrl, function(passed) {
+          if (!passed) alert("Error: impossible to load the remote file");
+        else 
+        */
+
+          
+           
+	      ep.openLocal({"flashPath":"/js/excelplus/2.4/swfobject/","labelButton":"Select your Excel file"},
+        function() 
+                     {
 
     var datasSheet = ep.createSheet("Datas");
 
   var line = 1;
   datasSheet.write({ "cell":"A" + line, "content":"List" });
   datasSheet.write({ "cell":"B" + line, "content":"Title" });
-  datasSheet.write({ "cell":"C" + line, "content":"Points" });
-  datasSheet.write({ "cell":"D" + line, "content":"Due" });
-  datasSheet.write({ "cell":"E" + line, "content":"Members" });
-  datasSheet.write({ "cell":"F" + line, "content":"Labels" });
-  datasSheet.write({ "cell":"G" + line, "content":"Card #" });
-  datasSheet.write({ "cell":"H" + line, "content":"Card URL"});
-  for (var i = 0; i < cards.length; i++) {
-    var card = cards[i];
+  datasSheet.write({ "cell":"C" + line, "content":"Description" });
+  datasSheet.write({ "cell":"D" + line, "content":"Points" });
+  datasSheet.write({ "cell":"E" + line, "content":"Due" });
+  datasSheet.write({ "cell":"F" + line, "content":"Members" });
+  datasSheet.write({ "cell":"G" + line, "content":"Labels" });
+  datasSheet.write({ "cell":"H" + line, "content":"Card #" });
+  datasSheet.write({ "cell":"I" + line, "content":"Card URL"});
+  
+          for (var i = 0; i < jsonLists.length; i++) {
+            
+            for (var k = 0; k < jsonLists[i].cards.length; k++) {
+    
+            
+            var card = jsonLists[i].cards[k];
+    var matches = card.name.match(/(\(\d+,?\d*\))/);
+    var points = "";
+    var title=card.name;
+    if(matches && matches.length>0){
+      points = parseFloat(matches[0].replace("(","").replace(")","").replace(",","."));
+      title=card.name.replace(matches[0] + " ","");
+    }
+     
+    var labels = "";
+    for (var j = 0; j < card.labels.length; j++) {
+      if(labels)
+        labels+=',';
+      labels+=card.labels[j].name;
+    }
+
     line++;
-    datasSheet.write({ "cell":"A" + line, "content":"List" });
-  datasSheet.write({ "cell":"B" + line, "content":"Title" });
-  datasSheet.write({ "cell":"C" + line, "content":"Points" });
-  datasSheet.write({ "cell":"D" + line, "content":"Due" });
-  datasSheet.write({ "cell":"E" + line, "content":"Members" });
-  datasSheet.write({ "cell":"F" + line, "content":"Labels" });
-  datasSheet.write({ "cell":"G" + line, "content":"Card #" });
-  datasSheet.write({ "cell":"H" + line, "content":"Card URL"});
+    datasSheet.write({ "cell":"A" + line, "content": jsonLists[i].name });
+    datasSheet.write({ "cell":"B" + line, "content": title});
+    datasSheet.write({ "cell":"C" + line, "content": card.desc});
+    datasSheet.write({ "cell":"D" + line, "content": points ? points : 0 });
+    datasSheet.write({ "cell":"E" + line, "content": "" });
+    datasSheet.write({ "cell":"F" + line, "content": "" });
+    datasSheet.write({ "cell":"G" + line, "content": labels });
+    datasSheet.write({ "cell":"H" + line, "content": line -1 });
+    datasSheet.write({ "cell":"I" + line, "content": card.url});
     
   }
+          }
 
-    .write({ "cell":"A1", "content":"A1" })
-    .write({ "sheet":"Datas", "cell":"D1", "content":new Date() });
   try {
-    ep.saveAs(nameBoard + ".xlsx");
+    ep.saveAs("devis.xlsx");
   } catch(e) {
-  }
 
-   
+  }
+       
+      }
+                     
+                     )
+                     }
+      }).then(function (result){
+     
+
+        })
+        //.catch(swal.noop)
+ 
   
       
-    
-    
-        
-      console.log('STEP END: excel-export-file');
-      
-        swal({
-          type: 'success',
-          title: 'Excel export to file',
-          text:"Export completed !",
-          confirmButtonText: 'OK',
-          showCancelButton: false
-        }).then(function (result) {
-
-          });
-      });
-
-        }).catch(swal.noop)
- });  
-
+  });
   };
   
   start();

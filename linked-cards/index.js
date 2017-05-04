@@ -51,13 +51,14 @@
   }
 
 
-  function searchCardFromBoard (jsonBoard, urlCard, sb){
+  function searchCardFromBoard (jsonBoard, urlCard, idCard, sb){
+	  
     for (var i = 0; i < jsonBoard.length; i++) {
             var c = jsonBoard[i];
             
             var desc = c.desc;
             //Find card url in description
-            if( desc.indexOf(urlCard)>-1){
+            if( desc.indexOf(urlCard)>-1 || desc.indexOf("/"+ idCard +"/")>-1 ){
               sb.push('<a href="$url$">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
             }
 
@@ -66,7 +67,7 @@
               var checkItems = c.checklists[j].checkItems;
               for (var k = 0; k < checkItems.length ; k++) {
                 var checkItem = checkItems[k];
-                if( checkItem.name.indexOf(urlCard)>-1){
+                if( checkItem.name.indexOf(urlCard)>-1 || checkItem.name.indexOf("/"+ idCard +"/")>-1 ){
                   sb.push('<a href="$url$" target="_blank">$name$</a><br/>'.replace('$name$', c.name).replace('$url$', c.url));
                 }
               }
@@ -119,13 +120,14 @@
 $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })
 .success(function(jsonCard){
 
-    $.get('/1/organizations/56d59f14e50d6ef4dcfb8dbd/boards')
-    .success(function(jsonAllBoards){
+	$.get('/1/members/me', { boards: 'open', board_fields: 'name', board_lists: 'open' })
+    //$.get('/1/organizations/56d59f14e50d6ef4dcfb8dbd/boards')
+    .success(function(jsonMe){
     
     var boardsSelector = '<select id="swal-board" class="swal2-input">';
-      for (var i = 0; i < jsonAllBoards.length; i++) {
-        var b = jsonAllBoards[i];
-        if( !b.closed && b.name.indexOf("QA")>-1){
+      for (var i = 0; i < jsonMe.boards.length; i++) {
+        var b = jsonMe.boards[i];
+        if( b.name.indexOf("QA")>-1){
         //var selectedAttr = l.name.toLowerCase() === 'done' ? 'selected="selected"' : '';
           boardsSelector += '<option value="' + b.id + '" >' + b.name + '</option>';
         }
@@ -180,6 +182,9 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
           batchCardsUrl+= "/cards/"+sbIdCards[i];
       }
 
+	  if(!batchCardsUrl)
+		  batchCardsUrl = "/cards/" + idCard;
+	  
 
     $.get('/1/batch?urls=' + batchCardsUrl)
       .success(function(jsonCards){
@@ -194,8 +199,8 @@ $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checkl
     $.get('/1/boards/' + idBoard + '/cards', { cards: 'open', card_fields: 'url,name,labels,desc,checklists', checklists: 'all' })
       .success(function(jsonBoard){
 
-        searchCardFromBoard (jsonBoard, urlCard, sbLinkedCards);
-        searchCardFromBoard (jsonBoardQA, urlCard, sbLinkedQACards);
+        searchCardFromBoard (jsonBoard, urlCard, idCard, sbLinkedCards);
+        searchCardFromBoard (jsonBoardQA, urlCard, idCard, sbLinkedQACards);
     
       
       console.log('STEP END: linked-cards');
