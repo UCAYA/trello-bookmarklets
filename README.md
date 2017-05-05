@@ -51,6 +51,15 @@ How to : Open card, then you see linked cards
 [Trello: Linked cards](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("linked-cards",window,document,getSelection?getSelection().toString():document.title);)
 
 
+#### export-excel-file
+Export cards to Excel file
+
+How to : Open board, then you can export cards in Excel file
+
+[Trello: Export Excel file](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("export-excel-file",window,document,getSelection?getSelection().toString():document.title);)
+
+
+
 
 
 ### Thanks
