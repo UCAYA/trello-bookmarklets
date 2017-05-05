@@ -18,9 +18,27 @@
             script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = src;
+            script.async = false;
             head.appendChild(script);
         }
     }
+  
+  function loadScripts(scripts){
+        var script = scripts.shift();
+        var head = document.getElementsByTagName('head')[0];
+        var el = document.createElement( 'script');
+        el.src = script;
+        el.onload = function(script){
+            
+            if ( scripts.length ) {
+                loadScripts(scripts);
+            } else {
+              start();               
+            }
+        };
+        head.appendChild(el);
+    }
+  
 
     function addRequireCss(url, version) {
         var href = version ? url + '?v=' + version : url;
@@ -50,67 +68,86 @@
         document.body.appendChild(img);
     }
     
+  
+  function fillLine(datasSheet, line, cellA, cellB, cellC, cellD, cellE, cellF, cellG, cellH, cellI){
+    datasSheet.write({ "cell": "A" + line, "content": cellA });
+    datasSheet.write({ "cell": "B" + line, "content": cellB });
+    datasSheet.write({ "cell": "C" + line, "content": cellC });
+    datasSheet.write({ "cell": "D" + line, "content": cellD });
+    datasSheet.write({ "cell": "E" + line, "content": cellE });
+    datasSheet.write({ "cell": "F" + line, "content": cellF });
+    datasSheet.write({ "cell": "G" + line, "content": cellG });
+    datasSheet.write({ "cell": "H" + line, "content": cellH });
+    datasSheet.write({ "cell": "I" + line, "content": cellI });
+  }
     
-
+  var scripts =['https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js',
+                     'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/jszip.js',
+                     'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/xlsx.min.js',
+                     'https://ucaya.github.io/trello-bookmarklets/export-excel-file/excelplus-2.5.js'];
+  
     var start = function () {
 
         var parts = /\/b\/([^/]+)/.exec(document.location);
 
         if (!parts) {
-            gaCollect('start', 'excel-export-file', 'failed');
+            gaCollect('start', 'export-excel-file', 'failed');
             alert('Your not on Trello board.');
             return false;
         }
 
         addRequireCss('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.css');
-
+        
+        
+      
+        /*
         addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js');
-
         addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/jszip.js');
         addRequireScript('https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.9.13/xlsx.js');
+        addRequireScript('https://lyrical-thing.glitch.me/excelplus-2.5.js');
+        */
 
-        addRequireScript('https://ucaya.github.io/trello-bookmarklets/excel-export-file/excelplus-2.5.js');
-        //addRequireScript('https://lyrical-thing.glitch.me/excelplus-2.5.js');
-
-       /* script.onload =
-          script.onreadystatechange = function () {
-              var state = this.readyState;
-              state && "loaded" !== state && "complete" !== state || tafonctionaappeler();
-          }
-*/
+       
 
         var idBoard = parts[1];
         var sb = [];
 
-        gaCollect('start', 'excel-export-file', 'success');
+        gaCollect('start', 'export-excel-file', 'success');
         console.log('STEP 1: idBoard: ' + idBoard);
 
-
-        $.get('/1/boards/' + idBoard + '/lists', { cards: 'open', card_fields: 'url,name,labels,list,members,desc', fields: 'name' })
+      //$.get('/1/boards/' + idBoard, { cards: 'open', card_fields: 'url,name,labels,desc,due', lists : 'open', list_fields : 'name',  membership_member:true, membership_members_fields:'fullName', members :'all' })
+      
+      $.get('/1/boards/' + idBoard + '/lists', { cards: 'open', card_fields: 'url,name,labels,desc,due', fields: 'name' })
         .success(function (jsonLists) {
 
-          var listsSelector = '<select id="swal-list" class="swal2-input" multiple style="height:76px">';
+          var listsSelector = '<select id="swal-list" class="swal2-input" multiple style="height:80px">';
           var lists = {}; 
           for (var i = 0; i < jsonLists.length; i++) {
               var l = jsonLists[i];       
               lists[l.id] = l.cards.length;
-              listsSelector  += '<option value="' + l.id + '" >' + l.name + '</option>';
+              listsSelector  += '<option value="' + l.id + '" >' + l.name + '  </option>';
             }
 
             listsSelector  += '</select>';
 
-          
             var fileButton = '<input type="button" id="file-object" >';
 
             swal({
-                type: 'question',
-                title: 'Export excel to file',
-                confirmButtonText: 'Close',
+                title: 'Export cards to excel file',
+                confirmButtonText: 'Export',
+                showCancelButton: true,
                 html:
                   '<br/>Select List(s) <span id="cards-count"></span>' + listsSelector + "<br/>" + 'Select Excel file <br/><br/>' + fileButton,
                 preConfirm: function () {
-                    return new Promise(function (resolve) {
-                        resolve([
+                    return new Promise(function (resolve, reject) {
+                        var selectedLists = $('#swal-list').val();
+                        var selectedFile = $('#file-object').val();
+                        if(!selectedLists || selectedLists.length == 0)
+                          reject('Please select at least one list');
+                        else if(!selectedFile)
+                          reject('Please choose an Excel file');
+                        else
+                          resolve([
                           $('#swal-list').val(),
                           $('#file-object').val(),
                         ])
@@ -144,15 +181,7 @@
                       var datasSheet = ep.createSheet("Datas");
 
                       var line = 1;
-                      datasSheet.write({ "cell": "A" + line, "content": "List" });
-                      datasSheet.write({ "cell": "B" + line, "content": "Title" });
-                      datasSheet.write({ "cell": "C" + line, "content": "Description" });
-                      datasSheet.write({ "cell": "D" + line, "content": "Points" });
-                      datasSheet.write({ "cell": "E" + line, "content": "Due" });
-                      datasSheet.write({ "cell": "F" + line, "content": "Members" });
-                      datasSheet.write({ "cell": "G" + line, "content": "Labels" });
-                      datasSheet.write({ "cell": "H" + line, "content": "Card #" });
-                      datasSheet.write({ "cell": "I" + line, "content": "Card URL" });
+                      fillLine(datasSheet, line, "List", "Title", "Description","Points", "Due","Members", "Labels", "Card #","Card URL");
 
                       for (var i = 0; i < jsonLists.length; i++) {
 
@@ -161,7 +190,7 @@
                             for (var k = 0; k < list.cards.length; k++) {
 
                               var card = list.cards[k];
-                              var matches = card.name.match(/(\(\d+,?\d*\))/);
+                              var matches = card.name.match(/^(\(\d+,?\d*\))/);
                               var points = "";
                               var title = card.name;
                               if (matches && matches.length > 0) {
@@ -176,22 +205,15 @@
                               }
 
                               line++;
-                              datasSheet.write({ "cell": "A" + line, "content": jsonLists[i].name });
-                              datasSheet.write({ "cell": "B" + line, "content": title });
-                              datasSheet.write({ "cell": "C" + line, "content": card.desc });
-                              datasSheet.write({ "cell": "D" + line, "content": points ? points : 0 });
-                              datasSheet.write({ "cell": "E" + line, "content": "" });
-                              datasSheet.write({ "cell": "F" + line, "content": "" });
-                              datasSheet.write({ "cell": "G" + line, "content": labels });
-                              datasSheet.write({ "cell": "H" + line, "content": line - 1 });
-                              datasSheet.write({ "cell": "I" + line, "content": card.url });
+                              fillLine(datasSheet, line, jsonLists[i].name , title , card.desc ,points ? points : 0 , card.due ? card.due : "","", labels, line - 1,card.url );
+                              
                           }
-                          }
+                        }
                       }
 
                       try {
                         var fileSave = ep.saveAs("devis.xlsx");
-                        $("#swal2-content").html("Export completed ✔️");
+                        swal.clickConfirm();
                         
                       } catch (e) {
 
@@ -200,7 +222,13 @@
                     
                 }
             }).then(function (result) {
-
+              
+               swal({
+                type : 'success',
+                title: 'Export cards to excel file',
+                confirmButtonText: 'Close',
+                html:'Export completed'
+              });
                    
             })
             //.catch(swal.noop)
@@ -210,7 +238,8 @@
         });
     };
 
-    start();
+    //start();
+  loadScripts(scripts);
 
 })();
 

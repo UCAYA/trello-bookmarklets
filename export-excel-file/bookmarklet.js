@@ -9,4 +9,4 @@ javascript: (function(U, C, A, Y, A_, __) {
   __.src = 'https://ucaya.github.io/trello-bookmarklets/' + U + '/index.js';
   A.getElementsByTagName('head')[0].appendChild(__);
 
-})('excel-export-file', window, document, getSelection ? getSelection().toString() : document.title)
+})('export-excel-file', window, document, getSelection ? getSelection().toString() : document.title)
