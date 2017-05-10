@@ -113,6 +113,13 @@
     var line = 1;
     fillLine(datasSheet, line, "List", "Title", "Description","Points", "Due","Members", "Labels", "Card #","Card URL", true);
 
+    var members = {};
+    for (var i = 0; i < jsonBoard.members.length; i++) {
+      var m =  jsonBoard.members[i];
+      members[m.id]=m.fullName;
+    }
+    
+    
     for (var i = 0; i < jsonBoard.lists.length; i++) {
 
         var list = jsonBoard.lists[i];
@@ -133,9 +140,15 @@
                     labels += ',';
                 labels += card.labels[j].name;
             }
-
+            var cardMembers = "";
+            for (var j = 0; j < card.idMembers.length; j++) {
+                if (cardMembers)
+                    cardMembers += ',';
+                cardMembers += members[card.idMembers[j]];
+            }
+            
             line++;
-            fillLine(datasSheet, line, list.name , title , card.desc ,points ? points : 0 , card.due ? card.due : "","", labels, line - 1,card.url );
+            fillLine(datasSheet, line, list.name , title , card.desc ,points ? points : 0 , card.due ? card.due : "",cardMembers, labels, line - 1,card.url );
 
         }
       }
@@ -157,7 +170,6 @@
             .then(function (workbook) {
           
                 fillExcelFile(lists, workbook, jsonBoard);
-                //workbook.sheet(0).cell("A1").value("This was created in the browser!").style("fontColor", "ff0000");
                 return workbook.outputAsync(type);
             })
     }
@@ -172,7 +184,9 @@
                   var link = document.createElement('a');
                   link.download = fileName;
                   link.href = href;
-                  link.click();  
+                  link.text = fileName;
+                  //link.click();  
+                  $("#swal2-content").append(link);
                 }
             })
             .catch(function (err) {
@@ -184,7 +198,6 @@
   var lists = {}; 
   var scripts =['https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.0/sweetalert2.min.js',
                 'https://gitcdn.xyz/cdn/dtjohnson/xlsx-populate/692280664d3f32feb591392143e63859b9994c96/browser/xlsx-populate.js'];
-                    
                     
   
     var start = function () {
@@ -231,8 +244,8 @@
         
             var fileButton = '<input type="file" id="file-input" style="display: inline" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">';
             
-            var radioButtonNewFile = '<div class="radio" style="text-align:left"><label style="display:inline;margin-right:4px;"><input id="radio-local" type="radio" name="source">&nbsp;New file:</label><input id="fileName-input" class="form-control" style="display: inline; width: 260px" type="text" value=""></div>';
-            var radioButtonSelectFile ='<div class="radio" style="text-align:left"><label style="display:inline;margin-right:4px;"><input id="radio-new-file" type="radio" name="source" checked="ckeched"></label>'+fileButton+'</div>';
+            var radioButtonNewFile = '<div class="radio" style="text-align:left"><label style="display:inline;margin-right:4px;font-weight:400;font-size:14px"><input id="radio-local" type="radio" name="source">&nbsp;New file:</label><input disabled="disabled" id="fileName-input" class="form-control" style="display: inline; width: 260px" type="text" value=""></div>';
+            var radioButtonSelectFile ='<div class="radio" style="text-align:left"><label style="display:inline;margin-right:4px;"><input type="radio" id="radio-select-file" name="source" checked="ckeched"></label>'+fileButton+'</div>';
 
             swal({
                 title: 'Export cards to excel file',
@@ -266,21 +279,25 @@
                 onOpen: function () {
 
                     setCardsCount();
-                    $('#swal-list').change(function() {
-                      setCardsCount();
-                    });
-                    
-                  $("input[type='radio']").css({ marginLeft : '4px'});
+                  $('#swal-list').change(function() {
+                    setCardsCount();
+                  });
                   
-                    $('#swal-list').focus();
-                    
-                    /*var ep = new ExcelPlus();
-                    ep.openLocal({ "flashPath1": "/js/excelplus/2.4/swfobject/", "labelButton": "Select your Excel file" },
-                    function () {
-                      fillExcelFile($('#swal-list').val(), ep, swal, jsonLists);
-                    })
-                  */
-                    
+                  $('#radio-select-file').change(function() {
+                    if( this.checked){
+                      $("#fileName-input").attr("disabled","disabled");
+                    }
+                  });
+                  
+                  $('#radio-local').change(function() {
+                      if( this.checked){
+                        $("#fileName-input").removeAttr("disabled");
+                        $("#fileName-input").focus();
+                      }
+                  });
+                  
+                  $("input[type='radio']").css({ marginLeft : '4px'});
+                  $('#swal-list').focus();
                 }
             }).then(function (result) {
               
@@ -300,9 +317,9 @@
               
                swal({
                 type : 'success',
-                title: 'Export cards to excel file',
+                title: 'Export completed',
                 confirmButtonText: 'Close',
-                html:'Export completed'
+                html:'<br/>'
               });
                    
             })
