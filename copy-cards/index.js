@@ -71,6 +71,11 @@
     var toIdList = null;
     var fromCards = [];
 
+    var visibleShortLinkCards = Array.apply(null, document.querySelectorAll('.list-card:not(.hide) .js-card-name')).map(function (_) {
+       var m = /\/c\/([^/]+)/.exec(_.href);
+       return m[1];
+    });
+
     // current member info with all board with lists
     $.get('/1/members/me', { boards: 'open', board_fields: 'name,shortLink,url', board_lists: 'open' })
     .success(function(jsonMe) {
@@ -94,7 +99,8 @@
             '🗃 Select Board' +
             boardsSelector +
             '🗃 Select List' +
-            listsSelector,
+            listsSelector +
+            '<span>⚠️ You\'ll create ' + visibleShortLinkCards.length + ' cards</span>',
           preConfirm: function () {
             return new Promise(function (resolve) {
               resolve([
@@ -146,11 +152,6 @@
           var cards = jsonBoard.cards;
 
           //filter cards when only cards visible on screen
-          var visibleShortLinkCards = Array.apply(null, document.querySelectorAll('.list-card:not(.hide) .js-card-name')).map(function (_) {
-             var m = /\/c\/([^/]+)/.exec(_.href);
-             return m[1];
-          });
-
           for (var i = 0; i < visibleShortLinkCards.length; i++) {
             var cardShortLink = visibleShortLinkCards[i];
             var card = cards.find(function(_) {return _.shortLink === cardShortLink})
