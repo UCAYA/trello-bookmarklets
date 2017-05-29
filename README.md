@@ -43,6 +43,14 @@ How to : Open board, set "done" list and version name
 ![trello-bookmarklet-releasenotes-101.gif](assets/trello-bookmarklet-releasenotes-101.gif)
 
 
+#### copy-cards
+Copy all cards visible on screen to another board, list...
+
+How to : Open board, then you can choose Board and list to copy your cards
+
+[Trello: Copy cards](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("copy-cards",window,document,getSelection?getSelection().toString():document.title);)
+
+
 #### linked-cards
 Display linked cards
 
