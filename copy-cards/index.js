@@ -72,7 +72,7 @@
     var fromCards = [];
 
     // current member info with all board with lists
-    $.get('/1/members/me', { boards: 'open', board_fields: 'name,shortLink', board_lists: 'open' })
+    $.get('/1/members/me', { boards: 'open', board_fields: 'name,shortLink,url', board_lists: 'open' })
     .success(function(jsonMe) {
 
       // current board info with all cards
@@ -177,7 +177,14 @@
           type: 'success',
           html:
             'Go to board: ' +
-            '<a href="'+ board.url +'">'+ board.name +'</a>',
+            '<a id="copy-cards-to-board-url" href="'+ board.url +'">'+ board.name +'</a>',
+          onOpen: function () {
+            $('#copy-cards-to-board-url').on('click', function(e) {
+
+              swal.close();
+
+            });
+          },
           timer: 10000
         });
 
