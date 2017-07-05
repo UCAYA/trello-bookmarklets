@@ -71,7 +71,7 @@
     var toIdList = null;
     var fromCards = [];
 
-    var visibleShortLinkCards = Array.apply(null, document.querySelectorAll('.list-card:not(.hide) .js-card-name')).map(function (_) {
+    var visibleShortLinkCards = Array.apply(null, document.querySelectorAll('.list-card:not(.hide)')).map(function (_) {
        var m = /\/c\/([^/]+)/.exec(_.href);
        return m[1];
     });
