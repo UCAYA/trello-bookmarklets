@@ -35,7 +35,7 @@
     }
 
     gaCollect('start', 'toggle-card-wide', 'success');
-    var h = document.getElementsByTagName('head');
+    var h = document.getElementsByTagName('head')[0];
     var toggleCardWideStyle = document.getElementById('toggle-card-wide-style');
     if (toggleCardWideStyle) {
       h.removeChild(toggleCardWideStyle);
@@ -49,7 +49,7 @@
       styleContent = document.createTextNode('.window-overlay .window .window-main-col { width: calc(100% - 240px); }');
       style.appendChild(styleContent);
       
-      h[0].appendChild(style);
+      h.appendChild(style);
     }
   };
 
