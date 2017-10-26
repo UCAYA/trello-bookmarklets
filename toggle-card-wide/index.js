@@ -37,13 +37,12 @@
     gaCollect('start', 'toggle-card-wide', 'success');
 
     var toggleCardWideStyle = document.getElementById('toggle-card-wide-style');
-    var toggleButton = $('#trello-toggle-checklist-button');
-
     if (toggleCardWideStyle) {
       document.removeChild(toggleCardWideStyle)
     }
     else {
       var style = document.createElement('style');
+      style.id = 'toggle-card-wide-style';
       var styleContent = document.createTextNode('.window-overlay .window { width: calc(100vw - 40px); }');
       style.appendChild(styleContent);
       styleContent = document.createTextNode('.window-overlay .window .window-main-col { width: calc(100% - 240px); }');
