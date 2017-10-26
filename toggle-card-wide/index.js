@@ -35,19 +35,20 @@
     }
 
     gaCollect('start', 'toggle-card-wide', 'success');
-
+    var h = document.getElementsByTagName('head');
     var toggleCardWideStyle = document.getElementById('toggle-card-wide-style');
     if (toggleCardWideStyle) {
-      document.removeChild(toggleCardWideStyle)
+      h.removeChild(toggleCardWideStyle);
     }
     else {
       var style = document.createElement('style');
       style.id = 'toggle-card-wide-style';
+
       var styleContent = document.createTextNode('.window-overlay .window { width: calc(100vw - 40px); }');
       style.appendChild(styleContent);
       styleContent = document.createTextNode('.window-overlay .window .window-main-col { width: calc(100% - 240px); }');
       style.appendChild(styleContent);
-      var h = document.getElementsByTagName('head');
+      
       h[0].appendChild(style);
     }
   };
