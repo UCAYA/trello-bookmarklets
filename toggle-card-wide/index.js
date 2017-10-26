@@ -42,7 +42,7 @@
     if (toggleCardWideStyle) {
       document.removeChild(toggleCardWideStyle)
     }
-    else 
+    else {
       var style = document.createElement('style');
       var styleContent = document.createTextNode('.window-overlay .window { width: calc(100vw - 40px); }');
       style.appendChild(styleContent);
