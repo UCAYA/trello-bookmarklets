@@ -50,7 +50,7 @@
     var presentModeElement = $('#toggle-present-mode-element');
     
     if (presentModeElement) {
-      document.body.removeChild(presentModeElement);
+      document.removeChild(presentModeElement);
     }
   };
 
@@ -68,7 +68,7 @@
       }
 
     } else {
-      currentCard = $('.list-card' + (back ? ':last' : 'first'));
+      currentCard = $('.list-card' + (back ? ':last' : ':first'));
       if (currentCard && currentCard.length > 0) {
         currentCard[0].click();
       }
@@ -105,7 +105,7 @@
     } else {
       $('.tooltip-container').after(
         '<div id="toggle-present-mode-element" style="position: fixed; display: flex; align-items: center; justify-content: center; z-index: 70; top: 0; left: 0; right: 0; height: 48px; background: linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0));">' +
-          '<a class="header-btn js-close" href="#">' +
+          '<a class="header-btn header-boards js-close" href="#">' +
             '<span class="header-btn-icon icon-lg icon-close light"></span>' + 
             '<span class="header-btn-text">Close Present mode</span>' +
           '</a>' +
