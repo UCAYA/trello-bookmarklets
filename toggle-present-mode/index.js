@@ -52,6 +52,8 @@
     if (presentModeElement) {
       document.body.removeChild(presentModeElement);
     }
+
+    gaCollect('close', 'toggle-present-mode close', 1);
   };
 
   var navigate = function(back) {
@@ -81,9 +83,11 @@
   }
 
   var prev = function () {
+    gaCollect('navigate', 'previous', 1);
     return navigate(true);
   }
   var next = function () {
+    gaCollect('navigate', 'next', 1);
     return navigate(false);
   }
 
