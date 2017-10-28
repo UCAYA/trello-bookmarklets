@@ -50,7 +50,7 @@
     var presentModeElement = document.getElementById('toggle-present-mode-element');
     
     if (presentModeElement) {
-      document.removeChild(presentModeElement);
+      document.body.removeChild(presentModeElement);
     }
   };
 
