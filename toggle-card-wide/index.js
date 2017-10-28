@@ -33,8 +33,8 @@
               '&dh=' + document.location.host +
               '&dp=' + document.location.pathname +
               '&dt=' + document.title +
-              '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language)
-              '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid())
+              '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language) +
+              '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid()) +
               '&ec=' + bookletName +
               '&ea=' + action + '&el=' + label + '&ev=' + value ? parseInt(value) : null;
     img.onload = img.onreadystatechange = function() {
