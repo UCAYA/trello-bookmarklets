@@ -29,10 +29,10 @@
     img.width = 1;
     img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12' +
               '&ds=trello-bookmarklets' +
-              '&dl=' + encodeURI(document.location.href) +
-              '&dh=' + encodeURI(document.location.host) +
-              '&dp=' + encodeURI(document.location.pathname) +
-              '&dt=' + encodeURI(document.title) +
+              '&dl=' + encodeURIComponent(document.location.href) +
+              '&dh=' + encodeURIComponent(document.location.host) +
+              '&dp=' + encodeURIComponent(document.location.pathname) +
+              '&dt=' + encodeURIComponent(document.title) +
               '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language) +
               '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid()) +
               '&ec=' + bookletName +
