@@ -10,13 +10,33 @@
  `-'     `-'  `-'     `-'  `-'     `-'  `-'     `-'  `-'     `-' */
 (function () {
 
+  var bookletName = 'trello-bookmarklets_toggle-card-wide';
+
+  function getNewUuid() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+  }
+
   function gaCollect(action, label, value) {
 
     var img = document.createElement('img');
     img.height = 1;
     img.width = 1;
-    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
-              '&ea=' + action + '&el=' + label + '&ev=' + value;
+    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12' +
+              '&ds=trello-bookmarklets' +
+              '&dl=' + document.location.href +
+              '&dh=' + document.location.host +
+              '&dp=' + document.location.pathname +
+              '&dt=' + document.title +
+              '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language)
+              '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid())
+              '&ec=' + bookletName +
+              '&ea=' + action + '&el=' + label + '&ev=' + value ? parseInt(value) : null;
     img.onload = img.onreadystatechange = function() {
                                                     var state = this.readyState;
                                                     state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
@@ -26,15 +46,19 @@
 
   var start = function() {
 
+    if (localStorage && !localStorage.getItem(bookletName + '_uid')) {
+      localStorage.setItem(bookletName + '_uid', getNewUuid())
+    }
+
     var parts = /\/c\/([^/]+)/.exec(document.location);
 
     if(!parts) {
-      gaCollect('start', 'toggle-card-wide', 'failed');
+      gaCollect('start', 'toggle-card-wide failed (No cards are open.)', 0);
       alert('No cards are open.');
       return false;
     }
 
-    gaCollect('start', 'toggle-card-wide', 'success');
+    gaCollect('start', 'toggle-card-wide success', 1);
     var h = document.getElementsByTagName('head')[0];
     var toggleCardWideStyle = document.getElementById('toggle-card-wide-style');
     if (toggleCardWideStyle) {
