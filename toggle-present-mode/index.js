@@ -60,7 +60,7 @@
     //   currentCard = currentCard[0];
     //   var nextCard = back ? currentCard.previousSibling : currentCard.nextSibling;
 
-    var cards = document.querySelectorAll('.list-card');
+    var cards = Array.apply(null, document.querySelectorAll('.list-card'));
     var currentCardIndex = cards && cards.findIndex(function(el) { return el.href === document.location.pathname; });
     
     if (currentCardIndex && currentCardIndex > -1) {
