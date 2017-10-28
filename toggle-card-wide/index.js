@@ -38,7 +38,7 @@
               '&ec=' + bookletName +
               '&ea=' + action + 
               '&el=' + label + 
-              '&ev=' + (value ? parseInt(value) : null);
+              '&ev=' + value;
     img.onload = img.onreadystatechange = function() {
                                                     var state = this.readyState;
                                                     state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
