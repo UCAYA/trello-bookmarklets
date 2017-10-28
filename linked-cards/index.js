@@ -36,21 +36,6 @@
     }
   }
 
-  function gaCollect(action, label, value) {
-
-    var img = document.createElement('img');
-    img.height = 1;
-    img.width = 1;
-    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
-              '&ea=' + action + '&el=' + label + '&ev=' + value;
-    img.onload = img.onreadystatechange = function() {
-                                                    var state = this.readyState;
-                                                    state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
-                                                }
-    document.body.appendChild(img);
-  }
-
-
   function searchCardFromBoard (jsonBoard, urlCard, idCard, sb){
 	  
     for (var i = 0; i < jsonBoard.length; i++) {
@@ -92,12 +77,52 @@
       }
   }
 
+  var bookletName = 'trello-bookmarklets_linked-cards';
+  
+  function getNewUuid() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+  }
+
+  function gaCollect(action, label, value) {
+
+    var img = document.createElement('img');
+    img.height = 1;
+    img.width = 1;
+    img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12' +
+              '&ds=trello-bookmarklets' +
+              '&dl=' + encodeURIComponent(document.location.href) +
+              '&dh=' + encodeURIComponent(document.location.host) +
+              '&dp=' + encodeURIComponent(document.location.pathname) +
+              '&dt=' + encodeURIComponent(document.title) +
+              '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language) +
+              '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid()) +
+              '&ec=' + bookletName +
+              '&ea=' + action + 
+              '&el=' + label + 
+              '&ev=' + value;
+    img.onload = img.onreadystatechange = function() {
+                                                    var state = this.readyState;
+                                                    state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
+                                                }
+    document.body.appendChild(img);
+  }
+
   var start = function() {
+
+    if (localStorage && !localStorage.getItem(bookletName + '_uid')) {
+      localStorage.setItem(bookletName + '_uid', getNewUuid())
+    }
 
     var parts = /\/c\/([^/]+)/.exec(document.location);
 
     if(!parts) {
-      gaCollect('start', 'linked-cards', 'failed');
+      gaCollect('start', 'linked-cards failed (No cards are open.)', 0);
       alert('No cards are open.');
       return false;
     }
@@ -114,7 +139,7 @@
     var allUrls = {};
     var urlRegExp = /https:\/\/trello.com\/c\/[\w.,@?^=%&:\/~+#-]*[\w.,@?^=%&\/~+#-]/g;
 
-    gaCollect('start', 'linked-cards', 'success');
+    gaCollect('start', 'linked-cards success', 1);
       console.log('STEP 1: idCard: ' + idCard);
 
 $.get('/1/cards/' + idCard, { fields: 'idBoard,name,desc,url,checklists', checklists: 'all' })

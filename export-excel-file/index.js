@@ -54,21 +54,6 @@
         }
     }
 
-  function gaCollect(action, label, value) {
-
-        var img = document.createElement('img');
-        img.height = 1;
-        img.width = 1;
-        img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12&cid=555&ec=trello-bookmarklets' +
-                  '&ea=' + action + '&el=' + label + '&ev=' + value;
-        img.onload = img.onreadystatechange = function () {
-            var state = this.readyState;
-            state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
-        }
-        document.body.appendChild(img);
-    }
-    
-  
   function fillLine(datasSheet, line, cellA, cellB, cellC, cellD, cellE, cellF, cellG, cellH, cellI, isHeader){
     datasSheet.cell("A" + line).value(cellA);
     datasSheet.cell("B" + line).value(cellB);
@@ -200,12 +185,52 @@
                 'https://gitcdn.xyz/cdn/dtjohnson/xlsx-populate/692280664d3f32feb591392143e63859b9994c96/browser/xlsx-populate.js'];
                     
   
-    var start = function () {
+    var bookletName = 'trello-bookmarklets_export-excel-file';
+    
+      function getNewUuid() {
+        var d = new Date().getTime();
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = (d + Math.random() * 16) % 16 | 0;
+            d = Math.floor(d / 16);
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+        });
+        return uuid;
+      }
+    
+      function gaCollect(action, label, value) {
+    
+        var img = document.createElement('img');
+        img.height = 1;
+        img.width = 1;
+        img.src = 'https://www.google-analytics.com/collect?v=1&t=event&tid=UA-2711526-12' +
+                  '&ds=trello-bookmarklets' +
+                  '&dl=' + encodeURIComponent(document.location.href) +
+                  '&dh=' + encodeURIComponent(document.location.host) +
+                  '&dp=' + encodeURIComponent(document.location.pathname) +
+                  '&dt=' + encodeURIComponent(document.title) +
+                  '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language) +
+                  '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid()) +
+                  '&ec=' + bookletName +
+                  '&ea=' + action + 
+                  '&el=' + label + 
+                  '&ev=' + value;
+        img.onload = img.onreadystatechange = function() {
+                                                        var state = this.readyState;
+                                                        state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
+                                                    }
+        document.body.appendChild(img);
+      }
+    
+      var start = function() {
+    
+        if (localStorage && !localStorage.getItem(bookletName + '_uid')) {
+          localStorage.setItem(bookletName + '_uid', getNewUuid())
+        }
 
         var parts = /\/b\/([^/]+)/.exec(document.location);
 
         if (!parts) {
-            gaCollect('start', 'export-excel-file', 'failed');
+            gaCollect('start', 'export-excel-file failed (Your not on Trello board.)', 0);
             alert('Your not on Trello board.');
             return false;
         }
@@ -216,7 +241,7 @@
         var idBoard = parts[1];
         var sb = [];
 
-        gaCollect('start', 'export-excel-file', 'success');
+        gaCollect('start', 'export-excel-file success', 1);
         console.log('STEP 1: idBoard: ' + idBoard);
 
 
