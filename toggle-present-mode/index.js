@@ -47,7 +47,7 @@
   }
 
   var close = function() {
-    var presentModeElement = $('#toggle-present-mode-element');
+    var presentModeElement = document.getElementById('toggle-present-mode-element');
     
     if (presentModeElement) {
       document.removeChild(presentModeElement);
@@ -55,20 +55,25 @@
   };
 
   var navigate = function(back) {
-    var currentCard = $('.list-card[href="' + document.location.pathname + '"]');
-    if (currentCard && currentCard.length > 0) {
-      currentCard = currentCard[0];
+    // var currentCard = $('.list-card[href="' + document.location.pathname + '"]');
+    // if (currentCard && currentCard.length > 0) {
+    //   currentCard = currentCard[0];
+    //   var nextCard = back ? currentCard.previousSibling : currentCard.nextSibling;
 
-      var nextCard = back ? currentCard.previousSibling : currentCard.nextSibling;
-
-      if (nextCard) {
-        nextCard.click();
+    var cards = document.querySelectorAll('.list-card');
+    var currentCardIndex = cards && cards.findIndex(function(el) { return el.href === document.location.pathname; });
+    
+    if (currentCardIndex && currentCardIndex > -1) {
+      var nextIndex = back ? nextIndex - 1 : nextIndex + 1;
+ 
+      if (nextIndex > 0 && nextIndex < cards.length) {
+        cards[nextIndex].click();
       } else {
-        $('.js-close-window').click();
+        document.querySelector('.js-close-window').click();
       }
 
     } else {
-      currentCard = $('.list-card' + (back ? ':last' : ':first'));
+      var currentCard = $('.list-card' + (back ? ':last' : ':first'));
       if (currentCard && currentCard.length > 0) {
         currentCard[0].click();
       }
@@ -107,7 +112,7 @@
         '<div id="toggle-present-mode-element" style="position: fixed; display: flex; align-items: center; justify-content: center; z-index: 70; top: 0; left: 0; right: 0; height: 48px; background: linear-gradient(rgba(0,0,0,1), rgba(0,0,0,0));">' +
           '<a class="header-btn header-boards js-close" href="#">' +
             '<span class="header-btn-icon icon-lg icon-close light"></span>' + 
-            '<span class="header-btn-text">Close Present mode</span>' +
+            '<span class="header-btn-text">Present mode </span>' +
           '</a>' +
           '<a class="header-btn js-prev" href="#"><span class="header-btn-icon icon-lg icon-back light"></span></a>' +
           '<a class="header-btn js-next" href="#"><span class="header-btn-icon icon-lg icon-move light"></span></a>' +
