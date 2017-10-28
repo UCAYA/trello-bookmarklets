@@ -66,7 +66,7 @@
     if (currentCardIndex > -1) {
       var nextIndex = back ? currentCardIndex - 1 : currentCardIndex + 1;
  
-      if (nextIndex > 0 && nextIndex < cards.length) {
+      if (nextIndex > -1 && nextIndex < cards.length) {
         cards[nextIndex].click();
       } else {
         document.querySelector('.js-close-window').click();
