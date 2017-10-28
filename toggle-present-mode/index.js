@@ -61,7 +61,7 @@
     //   var nextCard = back ? currentCard.previousSibling : currentCard.nextSibling;
 
     var cards = Array.apply(null, document.querySelectorAll('.list-card'));
-    var currentCardIndex = cards && cards.findIndex(function(el) { return el.href === document.location.pathname; });
+    var currentCardIndex = cards && cards.findIndex(function(el) { return el.href === document.location.href; });
     
     if (currentCardIndex && currentCardIndex > -1) {
       var nextIndex = back ? nextIndex - 1 : nextIndex + 1;
