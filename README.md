@@ -31,6 +31,14 @@ How to : Open card, then you can toggle card view
 [Trello: Toggle Card Wide](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("toggle-card-wide",window,document,getSelection?getSelection().toString():document.title);)
 
 
+#### toggle-present-mode
+Toggle Present mode
+
+How to : Open card, then you can toggle present mode
+
+[Trello: Toggle Present Mode](javascript:(function(U,C,A,Y,A_,__){__=A.getElementById(U),__&&__.parentNode.removeChild(__),__=A.createElement("script"),__.type="text/javascript",__.async=1,__.id=U,__.src="https://ucaya.github.io/trello-bookmarklets/"+U+"/index.js",A.getElementsByTagName("head")[0].appendChild(__)})("toggle-present-mode",window,document,getSelection?getSelection().toString():document.title);)
+
+
 #### card-to-markdown
 Export card in markdown
 
