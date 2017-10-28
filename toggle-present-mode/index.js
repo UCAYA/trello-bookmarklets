@@ -60,7 +60,7 @@
     //   currentCard = currentCard[0];
     //   var nextCard = back ? currentCard.previousSibling : currentCard.nextSibling;
 
-    var cards = Array.apply(null, document.querySelectorAll('.list-card'));
+    var cards = Array.apply(null, document.querySelectorAll('.list-card:not(.hide)'));
     var currentCardIndex = cards && cards.findIndex(function(el) { return el.href === document.location.href; });
     
     if (currentCardIndex > -1) {
@@ -73,7 +73,7 @@
       }
 
     } else {
-      var currentCard = $('.list-card' + (back ? ':last' : ':first'));
+      var currentCard = $('.list-card:not(.hide)' + (back ? ':last' : ':first'));
       if (currentCard && currentCard.length > 0) {
         currentCard[0].click();
       }
