@@ -32,11 +32,13 @@
               '&dl=' + document.location.href +
               '&dh=' + document.location.host +
               '&dp=' + document.location.pathname +
-              '&dt=' + document.title +
+              '&dt=' + encodeURI(document.title) +
               '&ul=' + (navigator && navigator.languages ? navigator.languages[0] : navigator.language) +
               '&cid=' + (localStorage ? localStorage.getItem(bookletName + '_uid') : getNewUuid()) +
               '&ec=' + bookletName +
-              '&ea=' + action + '&el=' + label + '&ev=' + value ? parseInt(value) : null;
+              '&ea=' + action + 
+              '&el=' + label + 
+              '&ev=' + (value ? parseInt(value) : null);
     img.onload = img.onreadystatechange = function() {
                                                     var state = this.readyState;
                                                     state && "loaded" !== state && "complete" !== state || img.parentNode.removeChild(img);
