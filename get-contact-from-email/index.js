@@ -98,7 +98,7 @@
           var card = json;
 
           if (data.person.avatar) {
-            $.post('/1/cards/' + card.id + 'attachments', {
+            $.post('/1/cards/' + card.id + '/attachments', {
               token: token,
               url: data.person.avatar
             });
