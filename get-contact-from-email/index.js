@@ -95,7 +95,7 @@
           }
         })
         .success(function(json){ 
-          var card = JSON.parse(json);
+          var card = json;
 
           if (data.person.avatar) {
             $.post('/1/cards/' + card.id + 'attachments', {
