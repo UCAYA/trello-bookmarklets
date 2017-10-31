@@ -94,6 +94,16 @@
             desc: desc
           }
         })
+        .success(function(json){ 
+          var card = JSON.parse(json);
+
+          if (data.person.avatar) {
+            $.post('/1/cards/' + card.id + 'attachments', {
+              token: token,
+              url: data.person.avatar
+            });
+          }
+        });
 
       });
     } else {
