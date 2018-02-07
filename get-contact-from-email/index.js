@@ -75,7 +75,7 @@
       $.get('https://proxy-sauce.glitch.me/https://clearbit.com/demos/combined?email=' + encodeURIComponent(email))
       .success(function(json){
 
-        var data = JSON.parse(json);
+        var data = json; //JSON.parse(json);
 
         var desc = '>Email: ' + email + '\n' +
                    'Bio: ' + data.person.bio + '\n' +
