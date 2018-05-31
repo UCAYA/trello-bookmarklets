@@ -72,7 +72,7 @@
     if (email) {
       email = inputTitle.val();
 
-      $.get('https://proxy-sauce.glitch.me/https://clearbit.com/demos/combined?email=' + encodeURIComponent(email))
+      $.get('https://proxy-tea.glitch.me/https://clearbit.com/demos/combined?email=' + encodeURIComponent(email))
       .success(function(json){
 
         var data = json; //JSON.parse(json);
